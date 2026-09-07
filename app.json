@@ -1,0 +1,38 @@
+{
+  "expo": {
+    "name": "RecipeOS Native",
+    "slug": "recipe-os-native",
+    "scheme": "recipeosnative",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "plugins": [
+      "expo-router",
+      "expo-notifications",
+      "expo-secure-store",
+      "expo-splash-screen",
+      "expo-font"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.recipeos.native",
+      "infoPlist": {
+        "NSCameraUsageDescription": "RecipeOS uses the camera to scan ingredients.",
+        "NSMicrophoneUsageDescription": "RecipeOS uses the microphone for voice recipe search.",
+        "NSUserNotificationsUsageDescription": "RecipeOS sends timer alerts while you cook."
+      }
+    },
+    "android": {
+      "package": "com.recipeos.native",
+      "edgeToEdgeEnabled": true,
+      "permissions": [
+        "CAMERA",
+        "RECORD_AUDIO",
+        "POST_NOTIFICATIONS"
+      ]
+    }
+  }
+}

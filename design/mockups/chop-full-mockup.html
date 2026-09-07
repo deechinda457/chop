@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chop — Full Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #14213D;
+    --navy-soft: #24365C;
+    --amber: #E8A317;
+    --amber-soft: #F6D89A;
+    --cream: #FBF6EC;
+    --cream-card: #FFFFFF;
+    --text-primary: #1B2233;
+    --text-muted: #7A7F8C;
+    --border: #ECE4D3;
+    --radius-lg: 24px;
+    --radius-md: 16px;
+    --radius-sm: 10px;
+    --shadow: 0 10px 30px -12px rgba(20, 33, 61, 0.18);
+    --danger: #C0503B;
+  }
+  html.dark {
+    --navy: #0E1830; --navy-soft: #1B2A4A; --amber: #F0B23A; --amber-soft: #F6D89A;
+    --cream: #0F1526; --cream-card: #182238; --text-primary: #F3EFE4;
+    --text-muted: #9AA1B4; --border: #26314C; --shadow: 0 10px 30px -12px rgba(0,0,0,0.5);
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body {
+    margin: 0; background: #EFE9DC; font-family: 'Inter', sans-serif;
+    display: flex; flex-direction: column; align-items: center; gap: 18px;
+    padding: 32px 12px 60px; min-height: 100vh;
+  }
+  html.dark body { background: #05070D; }
+
+  .toolbar {
+    display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center;
+    max-width: 390px;
+  }
+  .toolbar button {
+    background: var(--navy); color: var(--amber-soft); border: none;
+    padding: 8px 14px; border-radius: 999px; font-family: 'Inter'; font-weight: 600;
+    font-size: 12px; cursor: pointer;
+  }
+  .hint { font-family:'Inter'; font-size: 12px; color:#7A7F8C; text-align:center; max-width:360px; }
+
+  .phone {
+    width: 390px; height: 844px; background: var(--cream); border-radius: 46px;
+    overflow: hidden; position: relative;
+    box-shadow: 0 30px 60px -20px rgba(0,0,0,0.35), 0 0 0 10px #0B0B0D;
+    display: flex; flex-direction: column;
+  }
+  .statusbar {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 18px 28px 4px; font-size: 13px; font-weight: 600; color: var(--text-primary);
+    flex-shrink: 0; background: var(--cream);
+  }
+
+  .screen { display: none; flex-direction: column; flex: 1; min-height: 0; position: relative; }
+  .screen.active { display: flex; }
+
+  /* ---------- Sticky header (Home) ---------- */
+  .sticky-header {
+    flex-shrink: 0; padding: 8px 20px 14px; background: var(--cream);
+    display: flex; justify-content: space-between; align-items: flex-start;
+    border-bottom: 1px solid transparent;
+  }
+  .greeting-eyebrow { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--amber); font-weight:700; margin:0 0 4px; }
+  .greeting { font-family:'Poppins'; font-size: 21px; font-weight:700; color:var(--text-primary); margin:0; }
+  .avatar {
+    width: 42px; height: 42px; border-radius: 50%; background: var(--navy);
+    display:flex; align-items:center; justify-content:center; color: var(--amber-soft);
+    font-family:'Poppins'; font-weight:700; font-size:15px; flex-shrink:0;
+    border: 2px solid var(--amber); cursor:pointer;
+  }
+
+  .scroll { flex: 1; overflow-y: auto; padding: 4px 20px 100px; }
+  .scroll::-webkit-scrollbar { display:none; }
+
+  .badge-row { display:flex; align-items:center; gap:8px; margin: 10px 0 18px; }
+  .days-sorted {
+    display:inline-flex; align-items:center; gap:7px; background: var(--navy); color: var(--amber-soft);
+    padding: 7px 14px 7px 10px; border-radius:999px; font-size:12.5px; font-weight:600;
+  }
+  .days-sorted .dot { width:7px; height:7px; border-radius:50%; background: var(--amber); box-shadow: 0 0 0 3px rgba(232,163,23,0.25); }
+  .days-sorted b { color: var(--amber); font-weight:700; }
+
+  .hero {
+    position: relative; border-radius: var(--radius-lg);
+    background: linear-gradient(160deg, var(--navy) 0%, var(--navy-soft) 100%);
+    padding: 20px; color:#F5EFE0; box-shadow: var(--shadow); overflow:hidden; margin-bottom:26px;
+  }
+  .hero::after { content:""; position:absolute; width:220px; height:220px;
+    background: radial-gradient(circle, rgba(232,163,23,0.35), transparent 70%); top:-80px; right:-60px; }
+  .hero-eyebrow { font-size:11.5px; letter-spacing:.09em; text-transform:uppercase; color:var(--amber-soft); font-weight:700; margin:0 0 10px; position:relative; }
+  .hero-image {
+    width:100%; height:168px; border-radius: var(--radius-md);
+    background: linear-gradient(135deg, #D98A3D, #E8A317 55%, #C77A1F);
+    margin-bottom:16px; position:relative; display:flex; align-items:flex-end; padding:12px; cursor:pointer;
+  }
+  .hero-image span { background: rgba(20,33,61,0.55); color:#fff; font-size:11px; font-weight:600; padding:4px 10px; border-radius:999px; }
+  .hero-title { font-family:'Poppins'; font-size:21px; font-weight:700; margin:0 0 6px; position:relative; cursor:pointer; }
+  .hero-sub { font-size:13px; color:#C9CEDD; margin:0 0 18px; position:relative; }
+  .hero-actions { display:flex; gap:10px; position:relative; }
+  .btn { flex:1; border:none; border-radius: var(--radius-sm); padding:13px 0; font-weight:700; font-size:13.5px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; }
+  .btn-cook { background: var(--amber); color:#1B1204; }
+  .btn-swap, .btn-skip { background: rgba(255,255,255,0.08); color:#EDE7D8; border:1px solid rgba(255,255,255,0.18); flex:0.72; }
+
+  .section-head { display:flex; justify-content:space-between; align-items:baseline; margin:0 2px 12px; }
+  .section-title { font-family:'Poppins'; font-size:16.5px; font-weight:700; color:var(--text-primary); margin:0; }
+  .section-link { font-size:12px; font-weight:600; color: var(--amber); }
+  .row-scroll { display:flex; gap:12px; overflow-x:auto; padding-bottom:6px; margin-bottom:28px; }
+  .row-scroll::-webkit-scrollbar { display:none; }
+  .card { flex:0 0 132px; background: var(--cream-card); border-radius: var(--radius-md); border:1px solid var(--border); overflow:hidden; box-shadow: var(--shadow); cursor:pointer; }
+  .card-img { height:92px; background: linear-gradient(135deg, var(--c1,#6B8F71), var(--c2,#486350)); }
+  .card-body { padding:10px; }
+  .card-title { font-size:12.5px; font-weight:700; color:var(--text-primary); margin:0 0 4px; line-height:1.25; }
+  .card-meta { font-size:10.5px; color:var(--text-muted); font-weight:500; }
+  .pantry-card { flex:0 0 150px; display:flex; align-items:center; gap:10px; padding:10px; }
+  .day-chip { flex:0 0 84px; background: var(--cream-card); border:1px solid var(--border); border-radius: var(--radius-md); padding:12px 8px; display:flex; flex-direction:column; align-items:center; gap:6px; cursor:pointer; box-shadow: var(--shadow); }
+  .day-chip.filled { border-color: var(--amber); }
+  .dc-day { font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:.04em; }
+  .dc-dot { width:8px; height:8px; border-radius:50%; background: var(--amber); }
+  .day-chip:not(.filled) .dc-dot { display:none; }
+  .dc-plus { width:22px; height:22px; border-radius:50%; border:1.5px dashed var(--border); display:flex; align-items:center; justify-content:center; font-size:14px; color:var(--text-muted); }
+  .dc-meal { font-size:10.5px; font-weight:600; color:var(--text-primary); text-align:center; line-height:1.25; }
+  .dc-meal.muted { color: var(--text-muted); font-weight:500; }
+  .planner-day { display:flex; align-items:center; gap:14px; padding:14px 4px; border-bottom:1px solid var(--border); }
+  .planner-day .pd-date { width:46px; text-align:center; flex-shrink:0; }
+  .planner-day .pd-date b { display:block; font-family:'Poppins'; font-size:16px; color:var(--text-primary); }
+  .planner-day .pd-date span { font-size:10.5px; color:var(--text-muted); font-weight:700; text-transform:uppercase; }
+  .planner-day .pd-content { flex:1; }
+  .planner-day .pd-meal { font-size:13.5px; font-weight:700; color:var(--text-primary); margin-bottom:2px; }
+  .planner-day .pd-meta { font-size:11px; color:var(--text-muted); }
+  .planner-day .pd-empty { font-size:13px; color:var(--text-muted); font-weight:600; }
+  .planner-day .pd-add { width:32px; height:32px; border-radius:50%; border:1.5px dashed var(--border); display:flex; align-items:center; justify-content:center; font-size:16px; color: var(--amber); flex-shrink:0; }
+  .pantry-icon { width:40px; height:40px; border-radius:10px; background: var(--amber-soft); display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+  html.dark .pantry-icon { background: rgba(232,163,23,0.18); }
+
+  /* ---------- Tab bar ---------- */
+  .tabbar { position:absolute; bottom:0; left:0; right:0; height:84px; background: var(--cream-card); border-top:1px solid var(--border); display:flex; padding-bottom:22px; z-index:5; }
+  .tab { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; font-size:11px; font-weight:600; color:var(--text-muted); cursor:pointer; }
+  .tab.active { color: var(--amber); }
+  .tab-icon { width:22px; height:22px; display:flex; align-items:center; justify-content:center; font-size:17px; }
+
+  /* ---------- Back header (Recipe/Cook/Profile) ---------- */
+  .back-header { flex-shrink:0; display:flex; align-items:center; justify-content:space-between; padding:16px 18px; background: var(--cream); }
+  .icon-btn { width:38px; height:38px; border-radius:12px; background: var(--cream-card); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:16px; cursor:pointer; color:var(--text-primary); }
+  .back-title { font-family:'Poppins'; font-weight:700; font-size:15px; color:var(--text-primary); }
+
+  /* ---------- Recipe Detail ---------- */
+  .rd-hero { width:100%; height:230px; background: linear-gradient(135deg,#D98A3D,#E8A317 55%,#C77A1F); flex-shrink:0; }
+  .rd-body { padding: 18px 20px 110px; }
+  .rd-title { font-family:'Poppins'; font-size:23px; font-weight:700; color:var(--text-primary); margin:0 0 8px; }
+  .rd-meta { display:flex; gap:14px; font-size:12.5px; color:var(--text-muted); font-weight:600; margin-bottom:18px; }
+  .rd-tags { display:flex; gap:8px; margin-bottom:22px; flex-wrap:wrap; }
+  .tag { background: var(--amber-soft); color:#6B4B08; font-size:11px; font-weight:700; padding:5px 10px; border-radius:999px; }
+  html.dark .tag { background: rgba(232,163,23,0.18); color: var(--amber-soft); }
+  .rd-sectitle { font-family:'Poppins'; font-size:15px; font-weight:700; color:var(--text-primary); margin:0 0 12px; }
+  .ing-row { display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid var(--border); font-size:13.5px; color:var(--text-primary); }
+  .ing-check { width:18px; height:18px; border-radius:6px; border:1.5px solid var(--amber); flex-shrink:0; }
+  .ing-check.on { background: var(--amber); }
+  .step-row { display:flex; gap:12px; padding:12px 0; border-bottom:1px solid var(--border); }
+  .step-num { width:24px; height:24px; border-radius:50%; background: var(--navy); color:var(--amber-soft); font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .step-text { font-size:13px; color:var(--text-primary); line-height:1.5; }
+  .rd-sticky { position:absolute; bottom:0; left:0; right:0; padding:14px 20px 26px; background: var(--cream); border-top:1px solid var(--border); }
+
+  /* ---------- Cook entry ---------- */
+  .cook-entry-body { padding: 30px 22px; display:flex; flex-direction:column; gap:16px; }
+  .cook-context { text-align:center; margin-bottom: 10px; }
+  .cook-context p:first-child { font-family:'Poppins'; font-size:19px; font-weight:700; color:var(--text-primary); margin:0 0 4px; }
+  .cook-context p:last-child { font-size:12.5px; color:var(--text-muted); margin:0; }
+  .cook-choice { border:1.5px solid var(--border); background: var(--cream-card); border-radius: var(--radius-md); padding:20px; display:flex; align-items:center; gap:16px; cursor:pointer; box-shadow: var(--shadow); }
+  .cook-choice .ci { width:48px; height:48px; border-radius:14px; background: var(--amber-soft); display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0; }
+  html.dark .cook-choice .ci { background: rgba(232,163,23,0.18); }
+  .cook-choice b { font-family:'Poppins'; font-size:14.5px; color:var(--text-primary); display:block; margin-bottom:3px; }
+  .cook-choice span { font-size:12px; color:var(--text-muted); }
+
+  /* ---------- Cook step ---------- */
+  .cook-step-body { flex:1; display:flex; flex-direction:column; align-items:center; padding: 10px 24px 24px; overflow-y:auto; }
+  .ring-wrap { position:relative; width:150px; height:150px; margin: 6px 0 22px; }
+  .ring-wrap svg { transform: rotate(-90deg); }
+  .ring-center { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+  .ring-center b { font-family:'Poppins'; font-size:22px; color:var(--text-primary); }
+  .ring-center span { font-size:11px; color:var(--text-muted); font-weight:600; }
+  .step-instruction { font-family:'Poppins'; font-size:17px; font-weight:600; color:var(--text-primary); text-align:center; line-height:1.4; margin-bottom:22px; }
+  .step-nav { display:flex; gap:10px; width:100%; margin-top:auto; }
+  .ing-sheet-trigger { background:none; border:1px solid var(--border); color:var(--text-primary); font-size:12.5px; font-weight:600; padding:9px 16px; border-radius:999px; margin-bottom:16px; cursor:pointer; }
+  .bottom-sheet { position:absolute; left:0; right:0; bottom:0; background: var(--cream-card); border-radius:22px 22px 0 0; padding:18px 20px 30px; box-shadow: 0 -10px 30px rgba(0,0,0,0.15); transform: translateY(110%); transition: transform .25s ease; z-index:8; }
+  .bottom-sheet.open { transform: translateY(0); }
+  .sheet-handle { width:36px; height:4px; background: var(--border); border-radius:99px; margin: 0 auto 14px; }
+
+  /* ---------- Kitchen ---------- */
+  .kitchen-toggle-wrap { flex-shrink:0; padding: 14px 20px 12px; background: var(--cream); }
+  .toggle-pills { display:flex; background: var(--cream-card); border:1px solid var(--border); border-radius:999px; padding:4px; }
+  .pill { flex:1; text-align:center; padding:9px 0; font-size:13px; font-weight:700; border-radius:999px; cursor:pointer; color:var(--text-muted); }
+  .pill.on { background: var(--navy); color: var(--amber-soft); }
+  .k-row { display:flex; align-items:center; gap:12px; padding:12px 4px; border-bottom:1px solid var(--border); }
+  .k-name { flex:1; font-size:13.5px; font-weight:600; color:var(--text-primary); }
+  .k-meta { font-size:11px; color:var(--text-muted); margin-top:2px; }
+  .k-qty { font-size:12.5px; font-weight:600; color:var(--text-primary); margin-right:6px; }
+  .conf-dot { width:18px; height:18px; border-radius:9px; border:1.5px solid var(--amber); display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0; }
+  .conf-fill { border-radius:99px; background: var(--amber); }
+  .fab { position:absolute; bottom: 100px; right: 22px; width:56px; height:56px; border-radius:50%; background: var(--amber); color:#1B1204; font-size:26px; display:flex; align-items:center; justify-content:center; box-shadow:0 10px 24px rgba(232,163,23,0.45); cursor:pointer; z-index:6; border:none; }
+  .fab-sheet { position:absolute; left:0; right:0; bottom:0; background: var(--cream-card); border-radius:22px 22px 0 0; padding:10px 20px 34px; box-shadow: 0 -10px 30px rgba(0,0,0,0.15); transform: translateY(110%); transition: transform .25s ease; z-index:9; }
+  .fab-sheet.open { transform: translateY(0); }
+  .fab-opt { display:flex; align-items:center; gap:14px; padding:14px 4px; font-size:14px; font-weight:600; color:var(--text-primary); cursor:pointer; }
+  .fab-opt .fo-icon { width:38px; height:38px; border-radius:12px; background: var(--amber-soft); display:flex; align-items:center; justify-content:center; font-size:17px; }
+  html.dark .fab-opt .fo-icon { background: rgba(232,163,23,0.18); }
+
+  /* ---------- Explore ---------- */
+  .explore-header { flex-shrink:0; padding: 14px 20px 10px; background: var(--cream); }
+  .search-bar { display:flex; align-items:center; gap:10px; background: var(--cream-card); border:1px solid var(--border); border-radius: var(--radius-sm); padding:12px 14px; margin-bottom:14px; }
+  .search-bar input { border:none; background:none; outline:none; font-family:'Inter'; font-size:13.5px; color:var(--text-primary); flex:1; }
+  .explore-grid { display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+  .explore-grid .card { flex: unset; }
+  .explore-grid .card-img { height: 108px; }
+
+  /* ---------- Profile ---------- */
+  .profile-top { display:flex; flex-direction:column; align-items:center; padding: 12px 20px 22px; }
+  .p-avatar { width:76px; height:76px; border-radius:50%; background: var(--navy); border:3px solid var(--amber); display:flex; align-items:center; justify-content:center; font-family:'Poppins'; font-size:26px; font-weight:700; color: var(--amber-soft); margin-bottom:12px; }
+  .p-name { font-family:'Poppins'; font-size:17px; font-weight:700; color:var(--text-primary); margin:0 0 2px; }
+  .p-sub { font-size:12px; color:var(--text-muted); }
+  .menu-item { display:flex; align-items:center; gap:14px; padding:15px 20px; border-bottom:1px solid var(--border); font-size:14px; font-weight:600; color:var(--text-primary); cursor:pointer; }
+  .menu-item .mi-icon { width:34px; height:34px; border-radius:10px; background: var(--cream-card); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:15px; }
+  .menu-item.danger { color: var(--danger); }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <button onclick="document.documentElement.classList.toggle('dark')">Toggle theme</button>
+  <button onclick="nav('home')">Home</button>
+  <button onclick="nav('kitchen')">Kitchen</button>
+  <button onclick="nav('explore')">Explore</button>
+  <button onclick="nav('planner')">Planner</button>
+  <button onclick="nav('profile')">Profile</button>
+</div>
+<p class="hint">Tap the hero image/title, any recipe card, "Cook this", or the avatar to navigate — this is a click-through reference for structure and flow, not final copy.</p>
+
+<div class="phone">
+  <div class="statusbar"><span>9:41</span><span>●●●●  Wi-Fi  100%</span></div>
+
+  <!-- ============= HOME ============= -->
+  <div class="screen active" id="screen-home">
+    <div class="sticky-header">
+      <div>
+        <p class="greeting-eyebrow">Good evening</p>
+        <p class="greeting">What's for dinner?</p>
+      </div>
+      <div class="avatar" onclick="nav('profile')">D</div>
+    </div>
+    <div class="scroll">
+      <div class="badge-row"><div class="days-sorted"><span class="dot"></span><b>5 days</b> sorted this week</div></div>
+
+      <div class="section-head" style="margin-bottom:10px;"><h3 class="section-title">This week's plan</h3><span class="section-link" onclick="nav('planner')">Open planner</span></div>
+      <div class="row-scroll" style="margin-bottom:22px;" onclick="nav('planner')">
+        <div class="day-chip filled"><span class="dc-day">Mon</span><span class="dc-dot"></span><span class="dc-meal">Jollof Rice</span></div>
+        <div class="day-chip filled"><span class="dc-day">Tue</span><span class="dc-dot"></span><span class="dc-meal">Efo Riro</span></div>
+        <div class="day-chip"><span class="dc-day">Wed</span><span class="dc-plus">+</span><span class="dc-meal muted">Add meal</span></div>
+        <div class="day-chip"><span class="dc-day">Thu</span><span class="dc-plus">+</span><span class="dc-meal muted">Add meal</span></div>
+        <div class="day-chip"><span class="dc-day">Fri</span><span class="dc-plus">+</span><span class="dc-meal muted">Add meal</span></div>
+      </div>
+
+      <div class="hero">
+        <p class="hero-eyebrow">Tonight's pick — from what you have</p>
+        <div class="hero-image" onclick="nav('recipe')"><span>🍲 Uses 5 pantry items</span></div>
+        <h2 class="hero-title" onclick="nav('recipe')">Jollof Rice with Grilled Chicken</h2>
+        <p class="hero-sub">35 min · Serves 2 · Uses rice, tomato, pepper +2 more</p>
+        <div class="hero-actions">
+          <button class="btn btn-swap">↺ Swap</button>
+          <button class="btn btn-cook" onclick="nav('cook-entry')">▶ Cook this</button>
+          <button class="btn btn-skip">✕ Skip</button>
+        </div>
+      </div>
+
+      <div class="section-head"><h3 class="section-title">From your kitchen</h3><span class="section-link" onclick="nav('kitchen')">See all</span></div>
+      <div class="row-scroll">
+        <div class="card pantry-card" onclick="nav('kitchen')"><div class="pantry-icon">🍚</div><div><p class="card-title">Rice</p><p class="card-meta">Full · 3 recipes</p></div></div>
+        <div class="card pantry-card" onclick="nav('kitchen')"><div class="pantry-icon">🍅</div><div><p class="card-title">Tomato</p><p class="card-meta">Half · 2 days left</p></div></div>
+        <div class="card pantry-card" onclick="nav('kitchen')"><div class="pantry-icon">🧅</div><div><p class="card-title">Onion</p><p class="card-meta">Low · 5 recipes</p></div></div>
+      </div>
+
+      <div class="section-head"><h3 class="section-title">Quick this week</h3><span class="section-link" onclick="nav('explore')">See all</span></div>
+      <div class="row-scroll">
+        <div class="card" onclick="nav('recipe')"><div class="card-img" style="--c1:#D98A3D;--c2:#B5651D"></div><div class="card-body"><p class="card-title">Yam Porridge</p><p class="card-meta">25 min · Easy</p></div></div>
+        <div class="card" onclick="nav('recipe')"><div class="card-img" style="--c1:#6B8F71;--c2:#486350"></div><div class="card-body"><p class="card-title">Efo Riro</p><p class="card-meta">40 min · Medium</p></div></div>
+        <div class="card" onclick="nav('recipe')"><div class="card-img" style="--c1:#C9553D;--c2:#8F3A28"></div><div class="card-body"><p class="card-title">Suya Skewers</p><p class="card-meta">20 min · Easy</p></div></div>
+      </div>
+
+      <div class="section-head"><h3 class="section-title">Saved for later</h3><span class="section-link" onclick="nav('explore')">See all</span></div>
+      <div class="row-scroll">
+        <div class="card" onclick="nav('recipe')"><div class="card-img" style="--c1:#7A6A4F;--c2:#4E4230"></div><div class="card-body"><p class="card-title">Egusi Soup</p><p class="card-meta">Saved 2d ago</p></div></div>
+        <div class="card" onclick="nav('recipe')"><div class="card-img" style="--c1:#4B7A8C;--c2:#2E4F5C"></div><div class="card-body"><p class="card-title">Chicken Curry</p><p class="card-meta">Saved 4d ago</p></div></div>
+      </div>
+    </div>
+    <div class="tabbar">
+      <div class="tab active" onclick="nav('home')"><div class="tab-icon">⌂</div>Home</div>
+      <div class="tab" onclick="nav('kitchen')"><div class="tab-icon">▤</div>Kitchen</div>
+      <div class="tab" onclick="nav('explore')"><div class="tab-icon">⌕</div>Explore</div>
+    </div>
+  </div>
+
+  <!-- ============= KITCHEN ============= -->
+  <div class="screen" id="screen-kitchen">
+    <div class="kitchen-toggle-wrap">
+      <div class="back-header" style="padding:0 0 14px;"><span class="back-title">Kitchen</span><span></span></div>
+      <div class="toggle-pills">
+        <div class="pill on" id="pill-have" onclick="setPill('have')">Have</div>
+        <div class="pill" id="pill-need" onclick="setPill('need')">Need</div>
+      </div>
+    </div>
+    <div class="scroll" style="padding-top:6px;">
+      <div id="have-view">
+        <div class="k-row"><div class="k-qty">2 cup</div><div class="k-name">Rice<div class="k-meta">Pantry · fresh</div></div><div class="conf-dot"><div class="conf-fill" style="width:14px;height:14px;"></div></div></div>
+        <div class="k-row"><div class="k-qty">4 pcs</div><div class="k-name">Tomato<div class="k-meta">Fridge · 2 days left</div></div><div class="conf-dot"><div class="conf-fill" style="width:9px;height:9px;"></div></div></div>
+        <div class="k-row"><div class="k-qty">1 pcs</div><div class="k-name">Onion<div class="k-meta">Pantry · low stock</div></div><div class="conf-dot"><div class="conf-fill" style="width:5px;height:5px;"></div></div></div>
+        <div class="k-row"><div class="k-qty">500 g</div><div class="k-name">Chicken<div class="k-meta">Freezer · fresh</div></div><div class="conf-dot"><div class="conf-fill" style="width:14px;height:14px;"></div></div></div>
+      </div>
+      <div id="need-view" style="display:none;">
+        <div class="k-row"><div class="k-name">Palm oil<div class="k-meta">Added 2d ago</div></div><div class="ing-check"></div></div>
+        <div class="k-row"><div class="k-name">Scotch bonnet pepper<div class="k-meta">Added today</div></div><div class="ing-check"></div></div>
+        <div class="k-row"><div class="k-name">Stock cubes<div class="k-meta">Added today</div></div><div class="ing-check"></div></div>
+      </div>
+    </div>
+    <button class="fab" onclick="toggleSheet('fab-sheet')">+</button>
+    <div class="fab-sheet" id="fab-sheet">
+      <div class="sheet-handle"></div>
+      <div class="fab-opt"><div class="fo-icon">📷</div>Scan with camera</div>
+      <div class="fab-opt"><div class="fo-icon">▤</div>Scan barcode</div>
+      <div class="fab-opt"><div class="fo-icon">🎙</div>Add with voice</div>
+      <div class="fab-opt"><div class="fo-icon">✎</div>Type manually</div>
+    </div>
+    <div class="tabbar">
+      <div class="tab" onclick="nav('home')"><div class="tab-icon">⌂</div>Home</div>
+      <div class="tab active" onclick="nav('kitchen')"><div class="tab-icon">▤</div>Kitchen</div>
+      <div class="tab" onclick="nav('explore')"><div class="tab-icon">⌕</div>Explore</div>
+    </div>
+  </div>
+
+  <!-- ============= EXPLORE ============= -->
+  <div class="screen" id="screen-explore">
+    <div class="explore-header">
+      <div class="back-header" style="padding:0 0 12px;"><span class="back-title">Explore</span><span></span></div>
+      <div class="search-bar">🔍 <input placeholder="Search recipes, ingredients..." /></div>
+      <div class="toggle-pills">
+        <div class="pill on">Search</div>
+        <div class="pill">Saved</div>
+        <div class="pill">History</div>
+      </div>
+    </div>
+    <div class="scroll" style="padding-top:14px;">
+      <div class="explore-grid">
+        <div class="card" onclick="nav('recipe')"><div class="card-img" style="--c1:#D98A3D;--c2:#B5651D"></div><div class="card-body"><p class="card-title">Yam Porridge</p><p class="card-meta">25 min · Easy</p></div></div>
+        <div class="card" onclick="nav('recipe')"><div class="card-img" style="--c1:#6B8F71;--c2:#486350"></div><div class="card-body"><p class="card-title">Efo Riro</p><p class="card-meta">40 min · Medium</p></div></div>
+        <div class="card" onclick="nav('recipe')"><div class="card-img" style="--c1:#C9553D;--c2:#8F3A28"></div><div class="card-body"><p class="card-title">Suya Skewers</p><p class="card-meta">20 min · Easy</p></div></div>
+        <div class="card" onclick="nav('recipe')"><div class="card-img" style="--c1:#4B7A8C;--c2:#2E4F5C"></div><div class="card-body"><p class="card-title">Chicken Curry</p><p class="card-meta">30 min · Medium</p></div></div>
+        <div class="card" onclick="nav('recipe')"><div class="card-img" style="--c1:#7A6A4F;--c2:#4E4230"></div><div class="card-body"><p class="card-title">Egusi Soup</p><p class="card-meta">50 min · Medium</p></div></div>
+        <div class="card" onclick="nav('recipe')"><div class="card-img" style="--c1:#8C6BAF;--c2:#5C3E7A"></div><div class="card-body"><p class="card-title">Moi Moi</p><p class="card-meta">45 min · Medium</p></div></div>
+      </div>
+    </div>
+    <div class="tabbar">
+      <div class="tab" onclick="nav('home')"><div class="tab-icon">⌂</div>Home</div>
+      <div class="tab" onclick="nav('kitchen')"><div class="tab-icon">▤</div>Kitchen</div>
+      <div class="tab active" onclick="nav('explore')"><div class="tab-icon">⌕</div>Explore</div>
+    </div>
+  </div>
+
+  <!-- ============= RECIPE DETAIL ============= -->
+  <div class="screen" id="screen-recipe">
+    <div class="scroll" style="padding:0;">
+      <div class="rd-hero"></div>
+      <div class="back-header" style="position:absolute; top:16px; left:0; right:0; background:none; padding:0 16px;">
+        <div class="icon-btn" onclick="nav('home')" style="background:rgba(255,255,255,0.85);">←</div>
+        <div class="icon-btn" style="background:rgba(255,255,255,0.85);">♡</div>
+      </div>
+      <div class="rd-body">
+        <h1 class="rd-title">Jollof Rice with Grilled Chicken</h1>
+        <div class="rd-meta"><span>⏱ 35 min</span><span>🍽 Serves 2</span><span>📊 Easy</span></div>
+        <div class="rd-tags"><span class="tag">Nigerian</span><span class="tag">One-pot</span><span class="tag">Uses 5 pantry items</span></div>
+
+        <p class="rd-sectitle">Ingredients</p>
+        <div class="ing-row"><div class="ing-check on"></div>2 cups rice</div>
+        <div class="ing-row"><div class="ing-check on"></div>4 tomatoes, blended</div>
+        <div class="ing-row"><div class="ing-check"></div>1 onion, sliced</div>
+        <div class="ing-row"><div class="ing-check"></div>500g chicken</div>
+        <div class="ing-row"><div class="ing-check"></div>2 tbsp palm oil</div>
+
+        <p class="rd-sectitle" style="margin-top:22px;">Steps</p>
+        <div class="step-row"><div class="step-num">1</div><div class="step-text">Season chicken and grill until golden, about 15 minutes.</div></div>
+        <div class="step-row"><div class="step-num">2</div><div class="step-text">Blend tomatoes, pepper, and onion into a smooth base.</div></div>
+        <div class="step-row"><div class="step-num">3</div><div class="step-text">Fry the base in palm oil until reduced and deep red.</div></div>
+        <div class="step-row"><div class="step-num">4</div><div class="step-text">Add rice and stock, cover, and simmer until tender.</div></div>
+      </div>
+    </div>
+    <div class="rd-sticky"><button class="btn btn-cook" style="width:100%;" onclick="nav('cook-entry')">▶ Cook this</button></div>
+  </div>
+
+  <!-- ============= COOK ENTRY ============= -->
+  <div class="screen" id="screen-cook-entry">
+    <div class="back-header"><div class="icon-btn" onclick="nav('recipe')">←</div><span class="back-title">Cook Mode</span><span style="width:38px;"></span></div>
+    <div class="cook-entry-body">
+      <div class="cook-context"><p>Jollof Rice with Grilled Chicken</p><p>How do you want to cook this?</p></div>
+      <div class="cook-choice" onclick="nav('cook-step')"><div class="ci">▶</div><div><b>Watch full video</b><span>Follow along with a video, cook at your own pace</span></div></div>
+      <div class="cook-choice" onclick="nav('cook-step')"><div class="ci">☰</div><div><b>Follow step by step</b><span>Guided steps with timers, one at a time</span></div></div>
+    </div>
+  </div>
+
+  <!-- ============= COOK STEP ============= -->
+  <div class="screen" id="screen-cook-step">
+    <div class="back-header"><div class="icon-btn" onclick="nav('cook-entry')">←</div><span class="back-title">Step 2 of 4</span><div class="icon-btn">▶</div></div>
+    <div class="cook-step-body">
+      <div class="ring-wrap">
+        <svg width="150" height="150"><circle cx="75" cy="75" r="64" stroke="var(--border)" stroke-width="10" fill="none"/><circle cx="75" cy="75" r="64" stroke="var(--amber)" stroke-width="10" fill="none" stroke-linecap="round" stroke-dasharray="402" stroke-dashoffset="201"/></svg>
+        <div class="ring-center"><b>2/4</b><span>Step</span></div>
+      </div>
+      <p class="step-instruction">Blend tomatoes, pepper, and onion into a smooth base.</p>
+      <button class="ing-sheet-trigger" onclick="toggleSheet('ing-sheet')">🧂 Check ingredients for this step</button>
+      <div class="step-nav">
+        <button class="btn btn-swap">← Back</button>
+        <button class="btn btn-cook">Next step →</button>
+      </div>
+    </div>
+    <div class="bottom-sheet" id="ing-sheet">
+      <div class="sheet-handle"></div>
+      <p class="rd-sectitle">For this step</p>
+      <div class="ing-row"><div class="ing-check on"></div>4 tomatoes, blended</div>
+      <div class="ing-row"><div class="ing-check on"></div>1 onion, sliced</div>
+      <div class="ing-row"><div class="ing-check"></div>2 scotch bonnet peppers</div>
+      <button class="btn btn-cook" style="width:100%; margin-top:14px;" onclick="toggleSheet('ing-sheet')">Done</button>
+    </div>
+  </div>
+
+  <!-- ============= PLANNER ============= -->
+  <div class="screen" id="screen-planner">
+    <div class="back-header"><div class="icon-btn" onclick="nav('home')">←</div><span class="back-title">This week's plan</span><div class="icon-btn">⟳</div></div>
+    <div class="scroll" style="padding-top:4px;">
+      <div class="planner-day">
+        <div class="pd-date"><b>12</b><span>Mon</span></div>
+        <div class="pd-content"><div class="pd-meal">Jollof Rice with Grilled Chicken</div><div class="pd-meta">35 min · Uses 5 pantry items</div></div>
+      </div>
+      <div class="planner-day">
+        <div class="pd-date"><b>13</b><span>Tue</span></div>
+        <div class="pd-content"><div class="pd-meal">Efo Riro</div><div class="pd-meta">40 min · Medium</div></div>
+      </div>
+      <div class="planner-day">
+        <div class="pd-date"><b>14</b><span>Wed</span></div>
+        <div class="pd-content"><div class="pd-empty">Nothing planned yet</div></div>
+        <div class="pd-add">+</div>
+      </div>
+      <div class="planner-day">
+        <div class="pd-date"><b>15</b><span>Thu</span></div>
+        <div class="pd-content"><div class="pd-empty">Nothing planned yet</div></div>
+        <div class="pd-add">+</div>
+      </div>
+      <div class="planner-day">
+        <div class="pd-date"><b>16</b><span>Fri</span></div>
+        <div class="pd-content"><div class="pd-empty">Nothing planned yet</div></div>
+        <div class="pd-add">+</div>
+      </div>
+      <div class="planner-day">
+        <div class="pd-date"><b>17</b><span>Sat</span></div>
+        <div class="pd-content"><div class="pd-empty">Nothing planned yet</div></div>
+        <div class="pd-add">+</div>
+      </div>
+      <div class="planner-day">
+        <div class="pd-date"><b>18</b><span>Sun</span></div>
+        <div class="pd-content"><div class="pd-empty">Nothing planned yet</div></div>
+        <div class="pd-add">+</div>
+      </div>
+    </div>
+    <div class="rd-sticky"><button class="btn btn-cook" style="width:100%;">✨ Auto-plan my week</button></div>
+  </div>
+
+  <!-- ============= PROFILE ============= -->
+  <div class="screen" id="screen-profile">
+    <div class="back-header"><div class="icon-btn" onclick="nav('home')">←</div><span class="back-title">Profile</span><span style="width:38px;"></span></div>
+    <div class="scroll" style="padding-top:0;">
+      <div class="profile-top">
+        <div class="p-avatar">D</div>
+        <p class="p-name">Deetech</p>
+        <p class="p-sub">Free plan · Nigeria</p>
+      </div>
+      <div class="menu-item"><div class="mi-icon">🍽</div>Preferences & diet</div>
+      <div class="menu-item"><div class="mi-icon">👪</div>Household & family</div>
+      <div class="menu-item"><div class="mi-icon">💰</div>Budgeting</div>
+      <div class="menu-item"><div class="mi-icon">🔔</div>Notifications</div>
+      <div class="menu-item"><div class="mi-icon">💳</div>Plan & billing</div>
+      <div class="menu-item danger"><div class="mi-icon">⎋</div>Sign out</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function nav(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-' + id).classList.add('active');
+    document.querySelectorAll('.bottom-sheet, .fab-sheet').forEach(s => s.classList.remove('open'));
+  }
+  function toggleSheet(id) {
+    document.getElementById(id).classList.toggle('open');
+  }
+  function setPill(which) {
+    document.getElementById('pill-have').classList.toggle('on', which === 'have');
+    document.getElementById('pill-need').classList.toggle('on', which === 'need');
+    document.getElementById('have-view').style.display = which === 'have' ? 'block' : 'none';
+    document.getElementById('need-view').style.display = which === 'need' ? 'block' : 'none';
+  }
+</script>
+</body>
+</html>
